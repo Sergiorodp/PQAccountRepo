@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint src/*.ts",
     "test": "npm run lint && npm run jest",
-    "jest": "jest --coverage test/*.test.ts",
+    "jest": "jest --coverage --detectOpenHandles test/*.test.ts",
     "start": "tsc && node dist/index.js"
   },
   "keywords": [],

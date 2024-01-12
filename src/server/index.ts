@@ -1,3 +1,10 @@
 import express, { Application } from "express"
 
-export const server : Application = express()
+//Routes
+import addMainRoutes from "../routes/mainRoute"
+
+const server : Application = express()
+
+addMainRoutes(server)
+
+export { server }
