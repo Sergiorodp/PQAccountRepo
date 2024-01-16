@@ -1,10 +1,14 @@
 import express, { Application } from "express"
-
+import dotenv from "dotenv"
+dotenv.config()
 //Routes
-import addMainRoutes from "../routes/mainRoute"
+import addUserRoutes from "../routes/PQUserRoutes/PQMainUserRoute"
 
 const server : Application = express()
 
-addMainRoutes(server)
+addUserRoutes(server)
+
+//connect to mongodb
+import '../client/mongoDB/index'
 
 export { server }
