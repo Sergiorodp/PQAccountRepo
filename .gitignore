@@ -1,4 +1,11 @@
+
 /node_modules
 package-lock.json
+
+# coveragte and built
 dist
-/coverage
+coverage/*
+
+# enviroment variables
+*.env
+.env
