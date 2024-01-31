@@ -10,3 +10,4 @@ coverage/*
 *.env
 .env
 coverage/clover.xml
+.eslintrc.yml
