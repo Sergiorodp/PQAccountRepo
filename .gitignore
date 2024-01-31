@@ -8,5 +8,4 @@ coverage/*
 
 # enviroment variables
 .env
-coverage/clover.xml
 .eslintrc.yml
