@@ -2,19 +2,19 @@ import { IPUC } from "@app/models/PQPUCModel";
 import PUCConection from "../Schemas/Standars/PQPucDbSchemas";
 import { pucRepository } from "@app/dataBase/repoInterfaces/PQPUCRepositoryInterface";
 
-export class mongoPUCRepository implements pucRepository {
+export class MongoPUCRepository implements pucRepository {
 
-    private static instance: mongoPUCRepository;
+    private static instance: MongoPUCRepository;
 
     private constructor() {
         // Private constructor to prevent direct instantiation
       }
 
-      public static getInstance(): mongoPUCRepository {
-        if (!mongoPUCRepository.instance) {
-            mongoPUCRepository.instance = new mongoPUCRepository();
+      public static getInstance(): MongoPUCRepository {
+        if (!MongoPUCRepository.instance) {
+            MongoPUCRepository.instance = new MongoPUCRepository();
         }
-        return mongoPUCRepository.instance;
+        return MongoPUCRepository.instance;
       }
 
     insert( PUC : IPUC ): Promise<IPUC | void>{

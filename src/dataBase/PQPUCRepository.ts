@@ -1,4 +1,4 @@
-import { mongoPUCRepository as pucRepository } from "./mongoDB/CRUD/PQ_CRUD_PUC";
+import { MongoPUCRepository as pucRepository } from "./mongoDB/CRUD/PQ_CRUD_PUC";
 import { IPUC } from "@app/models/PQPUCModel";
 
 //#region ADD PUC ACCOUNT
