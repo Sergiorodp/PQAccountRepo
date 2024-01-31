@@ -1,9 +1,9 @@
-import pucCRUD from "./mongoDB/CRUD/PQ_CRUD_PUC";
+import { mongoPUCRepository as pucRepository } from "./mongoDB/CRUD/PQ_CRUD_PUC";
 import { IPUC } from "@app/models/PQPUCModel";
 
 //#region ADD PUC ACCOUNT
 function addPUCAccount( PUC : IPUC): void{
-    pucCRUD.Insert(PUC)
+    pucRepository.getInstance().insert(PUC)
 }
 //#endregion
 
