@@ -1,10 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose'
-import { IPUC } from "@app/models/PQPUCModel";
+import { PUC } from "@app/models/PQPUCModel";
 
-export interface IPUCShema extends IPUC, Document {}
+export interface IPUCShema extends PUC, Document {}
 
 const PUCSchema : Schema = new Schema({
     class: { type: String, require: true},
+    code: {type: String, require: true},
     description: { type: String, require: true},
     groups: [{
         name: String,

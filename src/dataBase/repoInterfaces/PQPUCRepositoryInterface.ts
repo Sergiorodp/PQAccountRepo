@@ -1,5 +1,5 @@
-import { IPUC } from "@app/models/PQPUCModel";
+import { PUC } from "@app/models/PQPUCModel";
 
 export interface pucRepository {
-    insert( PUC: IPUC): Promise<IPUC | void>
+    insert( PUC: PUC ): Promise<PUC | void>
 }
