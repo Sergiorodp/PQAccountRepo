@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint src/*.ts",
+    "build": "tspc",
     "test": "npm run lint && npm run jest",
     "jest": "jest --coverage --detectOpenHandles test/*.test.ts",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --ignore-watch node_modules --no-notify src/index.ts",
