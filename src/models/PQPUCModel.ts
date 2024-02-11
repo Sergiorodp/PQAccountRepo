@@ -1,22 +1,10 @@
-export interface IPUC {
-    class: string,
-    description: string,
-    groups: [IPUCGroup]
-}
+import { z } from 'zod'
 
-interface IPUCGroup {
-    name: string,
-    code: string,
-    accounts: [IPUCAccount]
-}
 
-interface IPUCAccount {
-    code: string,
-    name: string,
-    subAccounts: [ISubAccount]
-}
+export const PucShema = z.object({
+    class: z.string(),
+    code: z.string(),
+    description: z.string()
+})
 
-interface ISubAccount {
-    name: string, 
-    code: string
-}
+export type PUC = z.infer<typeof PucShema> 

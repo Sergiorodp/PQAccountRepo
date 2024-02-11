@@ -1,4 +1,4 @@
-import { IPUC } from "@app/models/PQPUCModel";
+import { PUC } from "@app/models/PQPUCModel";
 import PUCConection from "../Schemas/Standars/PQPucDbSchemas";
 import { pucRepository } from "@app/dataBase/repoInterfaces/PQPUCRepositoryInterface";
 
@@ -17,7 +17,7 @@ export class MongoPUCRepository implements pucRepository {
         return MongoPUCRepository.instance;
       }
 
-    insert( PUC : IPUC ): Promise<IPUC | void>{
+    insert( PUC : PUC ): Promise<PUC | void>{
         return PUCConection.insertMany([PUC])
         .then( () => {
             console.log("new shema")
@@ -25,6 +25,10 @@ export class MongoPUCRepository implements pucRepository {
         .catch(() => {
             console.error("error load schema")
         })
+    }
+
+    getById( PucId : string) {
+        return PUCConection.findById(PucId)
     }
 }
 

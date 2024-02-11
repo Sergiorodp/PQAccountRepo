@@ -1,12 +1,25 @@
-import { IPUC } from "@app/models/PQPUCModel";
-import pucRepository from "@app/dataBase/PQPUCRepository";
+import puc from '@app/utils/PUC/puc.json'
 
-// #region CREATE PUC ACCOUNT
-function addPUCAccount(PUC : IPUC): void{
-    pucRepository.addPUCAccount( PUC )
+import { Request, Response } from "express"
+
+//#region GET PUC BY CODE
+function getPucByCode(req: Request, res: Response){
+    const {code = ''} = req.body
+    res.send(puc.filter( p => {
+        return p.Codigo.startsWith(code)
+    }))
 }
-// #endregion
+//#endregion
+
+//#region healthCheck
+function healthCheck(_ : Request, res: Response){
+    res.send({
+        responde: 'PUC API IS WORKING'
+    })
+}
+//#endregion
 
 export default {
-    addPUCAccount
+    getPucByCode,
+    healthCheck
 }
