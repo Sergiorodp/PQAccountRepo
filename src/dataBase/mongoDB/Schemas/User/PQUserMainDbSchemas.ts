@@ -7,8 +7,8 @@ const UserShema : Schema = new Schema({
     userName: { type: String, require: true},
     name: { type: String, require: true},
     password: { type: String, require: true},
-    mail: { type: String, require: true },
+    email: { type: String, require: true },
     MFA: { type: Boolean, default: false}
 })
 
-export default mongoose.model<IUserShema>('User', UserShema)
+export default mongoose.model<IUserShema>('PQ_Users_DB', UserShema)

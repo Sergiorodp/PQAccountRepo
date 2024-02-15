@@ -2,7 +2,7 @@ import { PUC } from "@app/models/PQPUCModel";
 
 import { PQUser } from "@app/models/PQUserModel";
 
-export interface pucRepository {
+export interface IPucRepository {
     insert( PUC: PUC ): Promise<PUC | void>
 }
 

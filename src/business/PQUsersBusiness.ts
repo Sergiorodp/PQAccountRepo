@@ -1,10 +1,12 @@
 import { PQUser, UserSchema } from "@app/models/PQUserModel";
 import { createNewPQUserRepo } from '@app/dataBase/PQUserRepository'
 import { Request } from "express";
+import { ZodError } from "zod";
 
 
-function createUser( req : Request ): PQUser | string{
-    let continueFlag = true;
+function createUser( req : Request ): PQUser | string | undefined {
+    let continueFlag : boolean = true
+    let error : ZodError | null = null
     const userParse = UserSchema.safeParse(req.body)
 
     //#region AUDIT
@@ -17,6 +19,7 @@ function createUser( req : Request ): PQUser | string{
             createNewPQUserRepo(userParse.data)
         }else{
             continueFlag = false
+            error = userParse.error
         }
     }
     //#endregion
@@ -25,7 +28,7 @@ function createUser( req : Request ): PQUser | string{
     if(continueFlag){
         return req.body
     }else{
-        return 'Error'
+        return error?.toString()
     }
     //#endregion
 }
