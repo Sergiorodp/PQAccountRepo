@@ -1,10 +1,14 @@
 import mongoose, { Schema, Document } from 'mongoose'
-import { IUser } from "@app/models/PQUserMainModel";
+import { PQUser } from "@app/models/PQUserModel";
 
-export interface IUserShema extends IUser, Document {}
+export interface IUserShema extends PQUser, Document {}
 
 const UserShema : Schema = new Schema({
-    usernName: { type: String, require: true}
+    userName: { type: String, require: true},
+    name: { type: String, require: true},
+    password: { type: String, require: true},
+    mail: { type: String, require: true },
+    MFA: { type: Boolean, default: false}
 })
 
 export default mongoose.model<IUserShema>('User', UserShema)

@@ -1,6 +1,5 @@
 import { z } from 'zod'
 
-
 export const PucShema = z.object({
     class: z.string(),
     code: z.string(),
