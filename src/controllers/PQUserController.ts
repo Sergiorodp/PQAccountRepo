@@ -2,7 +2,7 @@ import { Router, Request, Response} from "express";
 import { createUser } from '@app/business/PQUsersBusiness'
 import { HTTPCODES } from "@app/utils/httpCodes"
 
-const router = Router()
+const usersRouter = Router()
 
 console.log(`[[ USERS ]]`)
 
@@ -19,7 +19,7 @@ function createUserV1(req : Request, res : Response){
     }
 }
 
-router.get('/getUser/v1', )
-router.post('/createUser/v1', createUserV1)
+usersRouter.get('/get/v1', )
+usersRouter.post('/create/v1', createUserV1)
 
-export default router
+export default usersRouter
