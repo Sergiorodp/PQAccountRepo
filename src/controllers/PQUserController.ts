@@ -1,6 +1,6 @@
 import { Router, Request, Response} from "express";
-
 import { createUser } from '@app/business/PQUsersBusiness'
+import { HTTPCODES } from "@app/utils/httpCodes"
 
 const router = Router()
 
@@ -8,9 +8,12 @@ console.log(`[[ USERS ]]`)
 
 function createUserV1(req : Request, res : Response){
     if(req.body){
-        res.send(createUser(req))
+        createUser(req)
+        .then( userInfo => {
+            res.status(HTTPCODES.created).send(userInfo)
+        })
     }else{
-        res.status(400).send({
+        res.status(HTTPCODES.badRequest).send({
             value: 'transacción no procesada, no se encontro el body'
         })
     }

@@ -2,8 +2,14 @@ import { PQUser } from "@app/models/PQUserModel";
 import { MongoUsersRepository as userRepository } from "./mongoDB/CRUD/PQ_CRUD_Users";
 
 //#region CREATE USER  
-export function createNewPQUserRepo( user : PQUser ){
-    userRepository.getInstance().insert(user)
-    return user
+export async function createNewPQUserRepo( user : PQUser ) : Promise<PQUser | void>{
+    const newUser = await userRepository.getInstance().insert(user)
+    const userData : PQUser = {
+        userName: newUser.userName,
+        name: newUser.name,
+        password: '***********',
+        email: newUser.email
+    }
+    return userData
 }
 //#endregion
