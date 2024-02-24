@@ -15,3 +15,5 @@ function createThirdPartiePerson( req: Request, res: Response){
 
 thirdPartiesRouter.post('/create/v1', createThirdPartiePerson)
 
+export default thirdPartiesRouter
+
