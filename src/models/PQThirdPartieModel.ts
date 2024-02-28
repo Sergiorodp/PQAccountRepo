@@ -37,7 +37,7 @@ enum civilStatus {
     UNION_FREE = 'Union free',
 }
 
-export const ThirdPartiePersonShema = z.object({
+export const PQThirdPartiePersonShema = z.object({
     idType: z.nativeEnum(EDocType),
     idNum: z.string(),
     firstLastName: z.string().optional(),
@@ -64,4 +64,4 @@ export const ThirdPartiePersonShema = z.object({
     lastAssemblyAttended: z.boolean().optional()
 })
 
-export type PQThirdPartiePerson = z.infer<typeof ThirdPartiePersonShema>
+export type PQThirdPartiePerson = z.infer<typeof PQThirdPartiePersonShema>
