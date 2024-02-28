@@ -13,7 +13,7 @@ async function createUser( req : Request ): Promise<PQUser | string> {
     let userParse, createdUser
 
     //#region AUDIT
-
+    //TODO
     //#endregion
 
     //#region PARSE MODEL
@@ -60,6 +60,7 @@ async function createUser( req : Request ): Promise<PQUser | string> {
     //#endregion
 
     //#region AUDITORIA DE SALIDA
+    //TODO
     //#endregion
 }
 
