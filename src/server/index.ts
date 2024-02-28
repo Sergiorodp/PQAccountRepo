@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 dotenv.config()
 
 //Routes
-import addRoutes from "@app/routes/index.ts";
+import addRoutes from "@app/routes/index";
 
 const server : Application = express()
 server.use(express.json())
