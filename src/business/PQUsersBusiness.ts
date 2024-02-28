@@ -16,7 +16,7 @@ async function createUser( req : Request ): Promise<PQUser | string> {
     //TODO
     //#endregion
 
-    //#region PARSE MODEL
+    //#region VALIDATE DATA
     if(continueFlag){
         userParse = UserSchema.safeParse(req.body) 
         if(!userParse.success){
