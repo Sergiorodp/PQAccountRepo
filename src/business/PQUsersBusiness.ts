@@ -1,5 +1,6 @@
 import { PQUser, UserSchema } from "@app/models/PQUserModel";
 import { createNewPQUserRepo } from '@app/dataBase/PQUserRepository'
+import envs from "@app/config/envVars";
 import { Buffer } from "node:buffer";
 import { Request } from "express";
 import { ZodError } from "zod";
@@ -12,10 +13,10 @@ async function createUser( req : Request ): Promise<PQUser | string> {
     let userParse, createdUser
 
     //#region AUDIT
-
+    //TODO
     //#endregion
 
-    //#region PARSE MODEL
+    //#region VALIDATE DATA
     if(continueFlag){
         userParse = UserSchema.safeParse(req.body) 
         if(!userParse.success){
@@ -28,7 +29,10 @@ async function createUser( req : Request ): Promise<PQUser | string> {
     //#region USER DATA
     if(continueFlag && userParse?.success){
         try{
-            const pswd = await argon.hash( userParse.data.password ?? '', {secret: Buffer.from('mysecret')})
+            if(!envs.HASH_KEY){
+                throw new Error('HASH_KEY not found')
+            }
+            const pswd = await argon.hash( userParse.data.password ?? '', {secret: Buffer.from(envs.HASH_KEY)})
             userParse.data = {
                 ...userParse.data,
                 password: pswd
@@ -56,6 +60,7 @@ async function createUser( req : Request ): Promise<PQUser | string> {
     //#endregion
 
     //#region AUDITORIA DE SALIDA
+    //TODO
     //#endregion
 }
 

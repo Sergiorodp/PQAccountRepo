@@ -9,7 +9,8 @@
     "test": "npm run lint && npm run jest",
     "jest": "jest --coverage --detectOpenHandles test/*.test.ts",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --ignore-watch node_modules --no-notify src/index.ts",
-    "start": "tspc  && node -r tsconfig-paths/register dist/index.js"
+    "start": "tspc  && node -r tsconfig-paths/register dist/index.js",
+    "prod": "NODE_ENV=production tspc && node -r tsconfig-paths/register dist/index.js"
   },
   "keywords": [],
   "author": "",

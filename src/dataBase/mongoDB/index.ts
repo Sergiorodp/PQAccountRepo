@@ -1,13 +1,8 @@
 import mongoose from "mongoose";
-
-interface IprocessAtlas extends NodeJS.ProcessEnv {
-  ATLAS_URI?: string
-}
-
-const env : IprocessAtlas = process.env
+import envs from "@app/config/envVars";
 
 mongoose
-  .connect(env.ATLAS_URI as string)
+  .connect(envs.ATLAS_URI as string)
   .then(() => {
     console.log("Connected to the database!");
   })
