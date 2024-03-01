@@ -6,8 +6,8 @@ import thirdPartiePersonServices from '@app/controllers/PQThirdPartiesController
 
 export default function addRoutes(app : Application) {
     app.use('/api/v1/puc/v1', pucServices)
-    app.use('/api/v1/users/v1', userServices)
-    app.use('/api/v1/third-parties/v1', thirdPartiePersonServices)
+    app.use('/api/v1/users/', userServices)
+    app.use('/api/v1/third-parties/', thirdPartiePersonServices)
     /*
     app.use('/api/client/v1', () => {})
     app.use('/api/providers/v1', () => {})
