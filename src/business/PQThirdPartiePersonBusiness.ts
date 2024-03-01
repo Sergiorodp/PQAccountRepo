@@ -36,7 +36,7 @@ async function createThirdPartiePerson( req : Request ) : Promise<PQThirdPartieP
 
     //#region RESPONSE
     if(continueFlag){
-        return ''
+        return createdThirdPartiePerson ?? 'No Person created'
     }else{
         return error?.toString() ?? 'error desconocido'
     }
@@ -44,5 +44,12 @@ async function createThirdPartiePerson( req : Request ) : Promise<PQThirdPartieP
 
     //#region AUDITORIA DE SALIDA
     // TODO
+    //#endregion
+}
+
+
+async function getThirdPartiePerson(id: string) {
+     //#region AUDITORIA DE ENTRADA
+    // TODO 
     //#endregion
 }
