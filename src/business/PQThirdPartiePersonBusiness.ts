@@ -32,7 +32,10 @@ export async function createThirdPartiePersonBussinessV1( req : Request ) : Prom
 
     //#region RESPONSE
     if(continueFlag){
-        return createdThirdPartiePerson ?? 'No Person created'
+        return createdThirdPartiePerson ?? JSON.stringify({
+            error: 'No person created',
+            message: 'DB error, can´t create person'
+        })
     }else{
         return error?.toString() ?? 'error desconocido'
     }

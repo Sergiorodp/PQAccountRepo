@@ -12,8 +12,12 @@ function createThirdPartiePersonControllerv1( req: Request, res: Response){
     //#endregion
     if(req.body){
         createThirdPartiePersonBussinessV1(req)
-        .then( thirdPersonCreated => {
-            res.status(HTTPCODES.created).send(thirdPersonCreated)
+        .then( message => {
+            if(typeof thirdPartiesRouter === 'string'){
+                res.status(HTTPCODES.created).send(message)
+            }else{
+                res.status(HTTPCODES.badRequest).send(message)
+            }
         })
     } else {
         res.status(HTTPCODES.badRequest).send('No body found')

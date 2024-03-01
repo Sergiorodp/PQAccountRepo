@@ -44,7 +44,7 @@ export const PQThirdPartiePersonShema = z.object({
     secondLastName: z.string().optional(),
     firstName: z.string(),
     secondName: z.string().optional(),
-    entryDate: z.date({
+    entryDate: z.coerce.date({
         required_error: "Please select a date and time",
         invalid_type_error: "That's not a date!",
       }),
@@ -52,15 +52,15 @@ export const PQThirdPartiePersonShema = z.object({
     address: z.string(),
     email: z.string().email(),
     economicActivity: z.string().max(20),
-    municipalityCode: z.number().max(6),
+    municipalityCode: z.number().max(10000),
     contractType: z.nativeEnum(EContractType),
     educationLevel: z.string(),
     stratum: z.nativeEnum(EStratum),
     incomeLevel: z.nativeEnum(EIncomeLevel),
-    birthDate: z.date().optional(),    
+    birthDate: z.coerce.date().optional(),    
     occupation: z.string().max(20),
-    workDay: z.number().max(2).optional(),
-    withdrawalDate: z.date().optional(),
+    workDay: z.number().max(99).optional(),
+    withdrawalDate: z.coerce.date().optional(),
     lastAssemblyAttended: z.boolean().optional()
 })
 
