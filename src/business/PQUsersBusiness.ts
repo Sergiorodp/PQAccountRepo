@@ -12,10 +12,6 @@ async function createUser( req : Request ): Promise<PQUser | string> {
     let error : ZodError | null = null
     let userParse, createdUser
 
-    //#region AUDIT
-    //TODO
-    //#endregion
-
     //#region VALIDATE DATA
     if(continueFlag){
         userParse = UserSchema.safeParse(req.body) 
@@ -57,10 +53,6 @@ async function createUser( req : Request ): Promise<PQUser | string> {
     }else{
         return error?.toString() ?? 'error desconocido'
     }
-    //#endregion
-
-    //#region AUDITORIA DE SALIDA
-    //TODO
     //#endregion
 }
 
