@@ -3,14 +3,10 @@ import { createPQThirdPartiePersonRepo } from "@app/dataBase/PQThirdPartiePerson
 import { Request } from "express";
 import { ZodError } from "zod";
 
-async function createThirdPartiePerson( req : Request ) : Promise<PQThirdPartiePerson | string>{
+export async function createThirdPartiePersonBussinessV1( req : Request ) : Promise<PQThirdPartiePerson | string>{
     let continueFlag : boolean = true
     let error : ZodError | null = null
     let thisdPartieParse, createdThirdPartiePerson = null
-    
-    //#region AUDITORIA DE ENTRADA
-    // TODO 
-    //#endregion
 
     //#region VALIDATE DATA
     if(continueFlag){
@@ -41,14 +37,10 @@ async function createThirdPartiePerson( req : Request ) : Promise<PQThirdPartieP
         return error?.toString() ?? 'error desconocido'
     }
     //#endregion
-
-    //#region AUDITORIA DE SALIDA
-    // TODO
-    //#endregion
 }
 
 
-async function getThirdPartiePerson(id: string) {
+export async function getThirdPartiePerson(id: string) {
      //#region AUDITORIA DE ENTRADA
     // TODO 
     //#endregion
