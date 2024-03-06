@@ -7,9 +7,9 @@ export interface IPucRepository {
 }
 
 export interface IPQUserRepository {
-    insert( User : PQUser ): Promise<PQUser | void>
+    create( User : PQUser ): Promise<PQUser | void>
 }
 
 export interface IPQThirdPartiesRepository {
-    insert( TPPerson : PQThirdPartiePerson ): Promise< PQThirdPartiePerson | void>
+    create( TPPerson : PQThirdPartiePerson ): Promise< PQThirdPartiePerson | void>
 }

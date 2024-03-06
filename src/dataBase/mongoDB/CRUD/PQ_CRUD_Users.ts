@@ -17,8 +17,9 @@ export class MongoUsersRepository implements IPQUserRepository {
         return MongoUsersRepository.instance;
       }
 
-    async insert( User : PQUser ): Promise<PQUser>{
-        const mongoRes : Array<IUserShema> = await MDBUserConnection.insertMany([User])
-        return mongoRes[0]
+    async create( User : PQUser ): Promise<IUserShema>{
+        const mongoRes = await MDBUserConnection.create(User)
+        const userFormat = { ...mongoRes.toJSON(), _id: '', __v : ''}
+        return userFormat
     }
 }
