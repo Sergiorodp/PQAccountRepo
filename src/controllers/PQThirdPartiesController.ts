@@ -1,6 +1,6 @@
 import { Router, Request, Response} from "express";
 import { HTTPCODES } from "@app/utils/httpCodes"
-import { createThirdPartiePersonBussinessV1 } from '@app/business/PQThirdPartiePersonBusiness'
+import { createThirdPartiePersonBusinessV1 } from '@app/business/PQThirdPartiePersonBusiness'
 
 const thirdPartiesRouter = Router()
 
@@ -11,9 +11,9 @@ function createThirdPartiePersonControllerv1( req: Request, res: Response){
     // TODO 
     //#endregion
     if(req.body){
-        createThirdPartiePersonBussinessV1(req)
+        createThirdPartiePersonBusinessV1(req)
         .then( message => {
-            if(typeof thirdPartiesRouter === 'string'){
+            if(typeof thirdPartiesRouter !== 'string'){
                 res.status(HTTPCODES.created).send(message)
             }else{
                 res.status(HTTPCODES.badRequest).send(message)
