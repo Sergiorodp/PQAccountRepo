@@ -1,4 +1,4 @@
-import { PQUser, UserSchema } from "@app/models/PQUserModel";
+import { PQCreatedUser, PQUser, UserSchema } from "@app/models/PQUserModel";
 import { createNewPQUserRepo } from '@app/dataBase/PQUserRepository'
 import envs from "@app/config/envVars";
 import { Buffer } from "node:buffer";
@@ -6,11 +6,19 @@ import { Request } from "express";
 import { ZodError } from "zod";
 import argon from'argon2'
 
+//models handler
+import { IResponseBusiness } from "@app/models/PQResponseBusinessModel";
 
-async function createUser( req : Request ): Promise<PQUser | string> {
+
+async function createUser( req : Request ): Promise<IResponseBusiness<PQCreatedUser>> {
     let continueFlag : boolean = true
     let error : ZodError | null = null
-    let userParse, createdUser
+    let response : IResponseBusiness<PQUser> = {
+        message : '',
+        detail: [{}],
+        success: true
+    }
+    let userParse, createdUserResponse
 
     //#region VALIDATE DATA
     if(continueFlag){
@@ -43,16 +51,30 @@ async function createUser( req : Request ): Promise<PQUser | string> {
 
     //#region CREATE USER   
     if(continueFlag && userParse?.success){
-        createdUser = await createNewPQUserRepo(userParse.data)
+        createdUserResponse = await createNewPQUserRepo(userParse.data)
     }
     //#endregion
 
     //#region RESPONSE
     if(continueFlag){
-        return createdUser ?? 'No user created'
+        response.success = continueFlag
+        if(createdUserResponse){
+            response = {
+                ...response,
+                detail: [createdUserResponse]
+            }
+        }else {
+            response = {
+                ...response,
+                message: 'No user created, DB problem',
+            }
+        }
     }else{
-        return error?.toString() ?? 'error desconocido'
+        response.success = continueFlag
+        response.message = error?.toString() ?? 'Unknown Error'
     }
+
+    return response
     //#endregion
 }
 
