@@ -18,4 +18,7 @@ export const UserSchema = z.object({
 })
 
 export type PQUser = z.infer<typeof UserSchema>
+export interface PQCreatedUser extends PQUser {
+  id?: string
+}
 
