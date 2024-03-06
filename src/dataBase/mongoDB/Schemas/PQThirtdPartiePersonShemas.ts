@@ -1,9 +1,9 @@
 import mongoose, { Schema, Document } from 'mongoose'
 import { PQThirdPartiePerson } from "@app/models/PQThirdPartieModel";
 
-export interface IThirrdPartiePersonShema extends PQThirdPartiePerson, Document {}
+export interface IThirdPartiePersonShema extends PQThirdPartiePerson, Document {}
 
-const ThirdPartieUsershema : Schema = new Schema({
+const ThirdPartieUsershema : Schema = new Schema<PQThirdPartiePerson>({
     idType: { type: String, require: true},
     idNum: { type: String, require: true},
     firstLastName: { type: String, require: false, default: ''},
@@ -27,4 +27,8 @@ const ThirdPartieUsershema : Schema = new Schema({
     lastAssemblyAttended: { type: Boolean, default: false},
 })
 
-export default mongoose.model<IThirrdPartiePersonShema>('PQ_ThirdPartiePerson_DB', ThirdPartieUsershema)
+ThirdPartieUsershema.set('toJSON', {virtuals: true})
+ThirdPartieUsershema.virtual('id').get(function(this: IThirdPartiePersonShema){
+    return this._id.toHexString()
+})
+export default mongoose.model<IThirdPartiePersonShema>('PQ_ThirdPartiePerson_DB', ThirdPartieUsershema)
