@@ -3,9 +3,12 @@ import { createPQThirdPartiePersonRepo } from "@app/dataBase/PQThirdPartiePerson
 import { Request } from "express";
 import { ZodError } from "zod";
 
-export async function createThirdPartiePersonBussinessV1( req : Request ) : Promise<PQThirdPartiePerson | string>{
+export async function createThirdPartiePersonBusinessV1( req : Request ) : Promise<PQThirdPartiePerson | string>{
     let continueFlag : boolean = true
     let error : ZodError | null = null
+    let response = {
+        //TODO Response body
+    }
     let thisdPartieParse, createdThirdPartiePerson = null
 
     //#region VALIDATE DATA
