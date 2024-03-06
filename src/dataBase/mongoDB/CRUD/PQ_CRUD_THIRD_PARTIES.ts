@@ -17,8 +17,9 @@ export class MongoThirdPartiePersonRepository implements IPQThirdPartiesReposito
         return MongoThirdPartiePersonRepository.instance;
       }
 
-    async insert( TPPerson : PQThirdPartiePerson ): Promise<PQThirdPartiePerson>{
-        const mongoRes : Array<IThirdPartiePersonShema> = await MDBThirdPartiePersonConnection.insertMany([TPPerson])
-        return mongoRes[0]
+    async create( TPPerson : PQThirdPartiePerson ): Promise<IThirdPartiePersonShema>{
+        const mongoRes = await MDBThirdPartiePersonConnection.create(TPPerson)
+        const formatObj = {...mongoRes.toJSON(), _id : '', __v : ''}
+        return formatObj
     }
 }
