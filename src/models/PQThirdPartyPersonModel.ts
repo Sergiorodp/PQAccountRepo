@@ -20,11 +20,11 @@ enum EStratum {
     FOUR = '4', 
     FIVE = '5',
     SIX = '6',
-    SEVEM = '7'
+    SEVEN = '7'
 }
 
 enum EIncomeLevel {
-    MINIMUN = '1',
+    MINIMUM = '1',
     MEDLOW = '2',
     MEDHIGH = '3',
     HIGH = '4'
@@ -32,12 +32,13 @@ enum EIncomeLevel {
 
 enum civilStatus {
     MARRIED = 'Married',
-    DIVORSE = 'separate',
+    DIVORCE = 'separate',
     SINGLE = 'Single',
     UNION_FREE = 'Union free',
 }
 
-export const PQThirdPartiePersonShema = z.object({
+export const PQThirdPartyPersonSchema = z.object({
+    userId: z.string(),
     idType: z.nativeEnum(EDocType),
     idNum: z.string(),
     firstLastName: z.string().optional(),
@@ -64,4 +65,4 @@ export const PQThirdPartiePersonShema = z.object({
     lastAssemblyAttended: z.boolean().optional()
 })
 
-export type PQThirdPartiePerson = z.infer<typeof PQThirdPartiePersonShema>
+export type TPQThirdPartyPerson = z.infer<typeof PQThirdPartyPersonSchema>
