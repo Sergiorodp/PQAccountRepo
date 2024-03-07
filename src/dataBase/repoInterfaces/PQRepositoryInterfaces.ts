@@ -1,6 +1,6 @@
 import { PUC } from "@app/models/PQPUCModel";
 import { PQUser } from "@app/models/PQUserModel";
-import { PQThirdPartiePerson } from "@app/models/PQThirdPartieModel";
+import { TPQThirdPartyPerson } from "@app/models/PQThirdPartyPersonModel";
 
 export interface IPucRepository {
     insert( PUC: PUC ): Promise<PUC | void>
@@ -11,5 +11,5 @@ export interface IPQUserRepository {
 }
 
 export interface IPQThirdPartiesRepository {
-    create( TPPerson : PQThirdPartiePerson ): Promise< PQThirdPartiePerson | void>
+    create( TPPerson : TPQThirdPartyPerson ): Promise< TPQThirdPartyPerson | void>
 }
