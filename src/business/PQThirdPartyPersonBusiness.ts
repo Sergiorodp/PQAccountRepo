@@ -1,22 +1,22 @@
-import { PQThirdPartiePerson, PQThirdPartiePersonShema} from "@app/models/PQThirdPartieModel";
-import { createPQThirdPartiePersonRepo } from "@app/dataBase/PQThirdPartiePersonRepository";
+import { TPQThirdPartyPerson, PQThirdPartyPersonSchema} from "@app/models/PQThirdPartyPersonModel";
+import { createPQThirdPartyPersonRepo } from "@app/dataBase/PQThirdPartyPersonRepository";
 import { Request } from "express";
 import { ZodError } from "zod";
 
-export async function createThirdPartiePersonBusinessV1( req : Request ) : Promise<PQThirdPartiePerson | string>{
+export async function createThirdPartyPersonBusinessV1( req : Request ) : Promise<TPQThirdPartyPerson | string>{
     let continueFlag : boolean = true
     let error : ZodError | null = null
     let response = {
         //TODO Response body
     }
-    let thisdPartieParse, createdThirdPartiePerson = null
+    let thirdPersonParse, createdThirdPerson = null
 
     //#region VALIDATE DATA
     if(continueFlag){
-        thisdPartieParse = PQThirdPartiePersonShema.safeParse(req.body)
-        if(!thisdPartieParse.success){
+        thirdPersonParse = PQThirdPartyPersonSchema.safeParse(req.body)
+        if(!thirdPersonParse.success){
             continueFlag = false
-            error = thisdPartieParse.error
+            error = thirdPersonParse.error
         }
     }
     //#endregion
@@ -24,8 +24,8 @@ export async function createThirdPartiePersonBusinessV1( req : Request ) : Promi
     //#region CREATE PERSON
     if(continueFlag){
         try{
-            if(thisdPartieParse?.success){
-                createdThirdPartiePerson = await createPQThirdPartiePersonRepo(thisdPartieParse?.data);
+            if(thirdPersonParse?.success){
+                createdThirdPerson = await createPQThirdPartyPersonRepo(thirdPersonParse?.data);
             }
         }catch{
             continueFlag = false
@@ -35,7 +35,7 @@ export async function createThirdPartiePersonBusinessV1( req : Request ) : Promi
 
     //#region RESPONSE
     if(continueFlag){
-        return createdThirdPartiePerson ?? JSON.stringify({
+        return createdThirdPerson ?? JSON.stringify({
             error: 'No person created',
             message: 'DB error, can´t create person'
         })
