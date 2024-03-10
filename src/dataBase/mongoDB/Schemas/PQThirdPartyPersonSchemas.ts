@@ -1,9 +1,13 @@
 import mongoose, { Schema, Document } from 'mongoose'
 import { TPQThirdPartyPerson } from "@app/models/PQThirdPartyPersonModel";
 
-export interface IThirdPartyPersonSchema extends TPQThirdPartyPerson, Document {}
+interface IThirdPartyPerson extends TPQThirdPartyPerson {
+    userId: Schema.Types.ObjectId
+}
+export interface IThirdPartyPersonSchema extends IThirdPartyPerson, Document {}
 
-const ThirdPersonSchema : Schema = new Schema<TPQThirdPartyPerson>({
+const ThirdPersonSchema : Schema = new Schema<IThirdPartyPerson>({
+    userId: { type: Schema.Types.ObjectId , required: true },
     idType: { type: String, require: true},
     idNum: { type: String, require: true},
     firstLastName: { type: String, require: false, default: ''},
