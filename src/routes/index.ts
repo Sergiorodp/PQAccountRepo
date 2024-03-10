@@ -1,13 +1,13 @@
 import { Application } from "express";
 
-import pucServices from "@app/controllers/PQPUCController";
-import userServices from "@app/controllers/PQUserController";
-import thirdPartyPersonServices from '@app/controllers/PQThirdPartiesController'
+import userController from "@app/controllers/PQUserController";
+import thirdPartyPersonController from '@app/controllers/PQThirdPartiesController'
+import authController from "@app/controllers/PQAuthController";
 
 export default function addRoutes(app : Application) {
-    app.use('/api/v1/puc/v1', pucServices)
-    app.use('/api/v1/users/', userServices)
-    app.use('/api/v1/third-party/', thirdPartyPersonServices)
+    app.use('/api/v1/users/', userController)
+    app.use('/api/v1/third-party/', thirdPartyPersonController)
+    app.use('/api/v1/auth/', authController)
     /*
     app.use('/api/client/v1', () => {})
     app.use('/api/providers/v1', () => {})
