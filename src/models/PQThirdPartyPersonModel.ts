@@ -38,7 +38,6 @@ enum civilStatus {
 }
 
 export const PQThirdPartyPersonSchema = z.object({
-    userId: z.string(),
     idType: z.nativeEnum(EDocType),
     idNum: z.string(),
     firstLastName: z.string().optional(),
