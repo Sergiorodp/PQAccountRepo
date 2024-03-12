@@ -1,5 +1,5 @@
 import { Router, Request, Response} from "express";
-import { createUser } from '@app/business/PQUsersBusiness'
+import { createUserBusinessV1 } from '@app/business/PQUsersBusiness'
 import { HTTPCODES } from "@app/utils/httpCodes"
 
 const usersRouter = Router()
@@ -13,7 +13,8 @@ function createUserControllerV1(req : Request, res : Response){
     //#endregion
 
     if(req.body){
-        createUser(req)
+        createUserBusinessV1
+        (req)
         .then( userInfo => {
             res.status(HTTPCODES.created).send(userInfo)
         })

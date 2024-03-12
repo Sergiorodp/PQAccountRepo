@@ -10,7 +10,7 @@ import argon from'argon2'
 import { IResponseBusiness } from "@app/models/PQResponseBusinessModel";
 
 
-async function createUser( req : Request ): Promise<IResponseBusiness<PQCreatedUser>> {
+async function createUserBusinessV1( req : Request ): Promise<IResponseBusiness<PQCreatedUser>> {
     let continueFlag : boolean = true
     let error : ZodError | null = null
     let response : IResponseBusiness<PQUser> = {
@@ -79,5 +79,5 @@ async function createUser( req : Request ): Promise<IResponseBusiness<PQCreatedU
 }
 
 export {
-    createUser
+    createUserBusinessV1
 }
