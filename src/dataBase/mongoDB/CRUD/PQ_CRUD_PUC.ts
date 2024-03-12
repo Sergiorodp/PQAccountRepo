@@ -1,5 +1,5 @@
 import { PUC } from "@app/models/PQPUCModel";
-import PUCConection from "../Schemas/Standars/PQPucDbSchemas";
+import PUCConection from "../Schemas/PQPucDbSchemas";
 import { IPucRepository } from "@app/dataBase/repoInterfaces/PQRepositoryInterfaces";
 
 export class MongoPUCRepository implements IPucRepository {
