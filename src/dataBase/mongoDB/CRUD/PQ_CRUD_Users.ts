@@ -1,5 +1,5 @@
 import { PQUser } from "@app/models/PQUserModel";
-import MDBUserConnection, { IUserShema } from "../Schemas/User/PQUserMainDbSchemas";
+import MDBUserConnection, { IUserSchema } from "../Schemas/PQUserMainDbSchemas";
 import { IPQUserRepository } from "@app/dataBase/repoInterfaces/PQRepositoryInterfaces";
 
 export class MongoUsersRepository implements IPQUserRepository {
@@ -17,7 +17,7 @@ export class MongoUsersRepository implements IPQUserRepository {
         return MongoUsersRepository.instance;
       }
 
-    async create( User : PQUser ): Promise<IUserShema>{
+    async create( User : PQUser ): Promise<IUserSchema>{
         const mongoRes = await MDBUserConnection.create(User)
         const userFormat = { ...mongoRes.toJSON(), _id: '', __v : ''}
         return userFormat
