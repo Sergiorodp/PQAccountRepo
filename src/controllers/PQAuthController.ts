@@ -6,7 +6,7 @@ const router = Router()
 
 console.log(`[[ AUTH LOADED ]]`)
 
-function logIn( req: Request, res: Response){
+function userLoginControllerV1( req: Request, res: Response){
      //#region AUDITORIA DE ENTRADA
     // TODO 
     //#endregion
