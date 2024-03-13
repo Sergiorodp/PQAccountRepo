@@ -1,19 +1,18 @@
-import { PQCreatedUser, PQUser, UserSchema } from "@app/models/PQUserModel";
-import { createNewPQUserRepo } from '@app/dataBase/PQUserRepository'
-import envs from "@app/config/envVars";
-import { Buffer } from "node:buffer";
-import { Request } from "express";
-import { ZodError } from "zod";
+import { PQUserRepoResponse, TPQCreateUserRequest, UserSchema } from "@app/models/PQUserModel"
+import { createNewPQUserRepoV1 } from '@app/dataBase/PQUserRepository'
+import envs from "@app/config/envVars"
+import { Buffer } from "node:buffer"
+import { Request } from "express"
 import argon from'argon2'
 
 //models handler
 import { IResponseBusiness } from "@app/models/PQResponseBusinessModel";
 
 
-async function createUserBusinessV1( req : Request ): Promise<IResponseBusiness<PQCreatedUser>> {
-    let continueFlag : boolean = true
-    let error : ZodError | null = null
-    let response : IResponseBusiness<PQUser> = {
+export async function createUserBusinessV1( req : Request ): Promise<IResponseBusiness<PQUserRepoResponse>> {
+    let canContinue : boolean = true
+    let errorHandler : Error | null = null
+    let response : IResponseBusiness<PQUserRepoResponse> = {
         message : '',
         detail: [{}],
         success: true
@@ -21,20 +20,20 @@ async function createUserBusinessV1( req : Request ): Promise<IResponseBusiness<
     let userParse, createdUserResponse
 
     //#region VALIDATE DATA
-    if(continueFlag){
+    if(canContinue){
         userParse = UserSchema.safeParse(req.body) 
         if(!userParse.success){
-            continueFlag = false
-            error = userParse.error        
+            canContinue = false
+            errorHandler = userParse.error        
         }
     }
     //#endregion
 
     //#region USER DATA
-    if(continueFlag && userParse?.success){
+    if(canContinue && userParse?.success){
         try{
             if(!envs.HASH_KEY){
-                throw new Error('HASH_KEY not found')
+                throw new Error('')
             }
             const pswd = await argon.hash( userParse.data.password ?? '', {secret: Buffer.from(envs.HASH_KEY)})
             userParse.data = {
@@ -42,22 +41,31 @@ async function createUserBusinessV1( req : Request ): Promise<IResponseBusiness<
                 password: pswd
             }
         }catch{
-            continueFlag = false
+            canContinue = false
+            errorHandler = new Error('HASH_KEY not found')
         }
     }else{
-        continueFlag = false
+        canContinue = false
     }
     //#endregion
 
     //#region CREATE USER   
-    if(continueFlag && userParse?.success){
-        createdUserResponse = await createNewPQUserRepo(userParse.data)
+    if(canContinue && userParse?.success){
+        try
+        {
+            createdUserResponse = await createNewPQUserRepoV1(userParse.data)
+        }
+        catch(e)
+        {
+            canContinue = false
+            errorHandler = e as Error
+        }
     }
     //#endregion
 
     //#region RESPONSE
-    if(continueFlag){
-        response.success = continueFlag
+    if(canContinue){
+        response.success = canContinue
         if(createdUserResponse){
             response = {
                 ...response,
@@ -70,14 +78,10 @@ async function createUserBusinessV1( req : Request ): Promise<IResponseBusiness<
             }
         }
     }else{
-        response.success = continueFlag
-        response.message = error?.toString() ?? 'Unknown Error'
+        response.success = canContinue
+        response.message = errorHandler?.toString() ?? 'Unknown Error'
     }
 
     return response
     //#endregion
-}
-
-export {
-    createUserBusinessV1
 }
