@@ -1,17 +1,17 @@
-import { PUC } from "@app/models/PQPUCModel";
-import { PQUser } from "@app/models/PQUserModel";
-import { TPQThirdPartyPerson } from "@app/models/PQThirdPartyPersonModel";
-import { IUserSchema } from "../mongoDB/Schemas/PQUserMainDbSchemas";
+import { type PUC } from '@app/models/PQPUCModel'
+import { type PQUserRepoResponse, type TPQCreateUserRequest } from '@app/models/PQUserModel'
+import { type TPQThirdPartyPerson } from '@app/models/PQThirdPartyPersonModel'
 
 export interface IPucRepository {
-    insert( PUC: PUC ): Promise<PUC | void>
+  insert: (PUC: PUC) => Promise<PUC>
 }
 
 export interface IPQUserRepository {
-    create( User : PQUser ): Promise<PQUser | Error>
-    getById( id: string): Promise<IUserSchema | Error>
+  create: (User: TPQCreateUserRequest) => Promise<PQUserRepoResponse>
+  getById: (id: string) => Promise<PQUserRepoResponse>
+  getByEmail: (email: string) => Promise<PQUserRepoResponse>
 }
 
 export interface IPQThirdPartiesRepository {
-    create( TPPerson : TPQThirdPartyPerson ): Promise< TPQThirdPartyPerson | void>
+  create: (TPPerson: TPQThirdPartyPerson) => Promise< TPQThirdPartyPerson>
 }
