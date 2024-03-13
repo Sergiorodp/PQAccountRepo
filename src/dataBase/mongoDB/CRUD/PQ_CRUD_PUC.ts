@@ -1,35 +1,24 @@
-import { PUC } from "@app/models/PQPUCModel";
-import PUCConection from "../Schemas/PQPucDbSchemas";
-import { IPucRepository } from "@app/dataBase/repoInterfaces/PQRepositoryInterfaces";
+import { type PUC } from '@app/models/PQPUCModel'
+import PUCConection from '../Schemas/PQPucDbSchemas'
+import { type IPucRepository } from '@app/dataBase/repoInterfaces/PQRepositoryInterfaces'
 
 export class MongoPUCRepository implements IPucRepository {
+  private static instance: MongoPUCRepository
 
-    private static instance: MongoPUCRepository;
+  private constructor () {
+    // Private constructor to prevent direct instantiation
+  }
 
-    private constructor() {
-        // Private constructor to prevent direct instantiation
-      }
-
-      public static getInstance(): MongoPUCRepository {
-        if (!MongoPUCRepository.instance) {
-            MongoPUCRepository.instance = new MongoPUCRepository();
-        }
-        return MongoPUCRepository.instance;
-      }
-
-    insert( PUC : PUC ): Promise<PUC | void>{
-        return PUCConection.insertMany([PUC])
-        .then( () => {
-            console.log("new shema")
-        })
-        .catch(() => {
-            console.error("error load schema")
-        })
+  public static getInstance (): MongoPUCRepository {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (!MongoPUCRepository.instance) {
+      MongoPUCRepository.instance = new MongoPUCRepository()
     }
+    return MongoPUCRepository.instance
+  }
 
-    getById( PucId : string) {
-        return PUCConection.findById(PucId)
-    }
+  async insert (PUC: PUC): Promise<PUC> {
+    await PUCConection.insertMany([PUC])
+    return PUC
+  }
 }
-
-
