@@ -13,10 +13,17 @@ function userLoginControllerV1 (req: Request, res: Response): void {
   if (req.body) {
     authBusiness.userLoginBusinessV1(req)
       .then(businessRes => {
-        res.status(203).send(businessRes)
+        if (businessRes.success) {
+          res.status(HTTPCODES.accepted).send(businessRes)
+        } else {
+          res.status(HTTPCODES.badRequest).send(businessRes)
+        }
       })
       .catch(e => {
-        res.status(500)
+        res.status(HTTPCODES.serverError).send({
+          message: e.toString(),
+          success: false
+        })
       })
   } else {
     res.status(HTTPCODES.badRequest).send('No body found')
