@@ -6,18 +6,24 @@ const thirdPartiesRouter = Router()
 
 console.log('[[ THIRD PARTIES LOADED ]]')
 
-function createThirdPartiePersonControllerv1 (req: Request, res: Response) {
+function createThirdPartiePersonControllerv1 (req: Request, res: Response): void {
   // #region AUDITORIA DE ENTRADA
   // TODO
   // #endregion
   if (req.body) {
     createThirdPartyPersonBusinessV1(req)
-      .then(message => {
-        if (typeof thirdPartiesRouter !== 'string') {
-          res.status(HTTPCODES.created).send(message)
+      .then(createResponse => {
+        if (createResponse.success) {
+          res.status(HTTPCODES.accepted).send(createResponse)
         } else {
-          res.status(HTTPCODES.badRequest).send(message)
+          res.status(HTTPCODES.badRequest).send(createResponse)
         }
+      })
+      .catch(() => {
+        res.status(HTTPCODES.serverError).send({
+          message: 'server error',
+          success: false
+        })
       })
   } else {
     res.status(HTTPCODES.badRequest).send('No body found')
