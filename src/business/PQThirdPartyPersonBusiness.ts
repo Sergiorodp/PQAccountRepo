@@ -1,53 +1,66 @@
-import { TPQThirdPartyPerson, PQThirdPartyPersonSchema} from "@app/models/PQThirdPartyPersonModel";
-import { createPQThirdPartyPersonRepo } from "@app/dataBase/PQThirdPartyPersonRepository";
-import { Request } from "express";
-import { ZodError } from "zod";
+import { PQThirdPartyPersonSchema } from '@app/models/PQThirdPartyPersonModel'
+import { createPQThirdPartyPersonRepo } from '@app/dataBase/PQThirdPartyPersonRepository'
+import { type Request } from 'express'
+import { type ZodError } from 'zod'
+import { type IResponseBusiness } from '@app/models/PQResponseBusinessModel'
 
-export async function createThirdPartyPersonBusinessV1( req : Request ) : Promise<TPQThirdPartyPerson | string>{
-    let continueFlag : boolean = true
-    let error : ZodError | null = null
-    let response = {
-        //TODO Response body
-    }
-    let thirdPersonParse, createdThirdPerson = null
+export async function createThirdPartyPersonBusinessV1 (req: Request): Promise<IResponseBusiness> {
+  let canContinue: boolean = true
+  let errorHandler: ZodError | null = null
+  let response: IResponseBusiness = {
+    message: '',
+    success: false,
+    detail: [{}]
+  }
+  let thirdPersonParse; let createdThirdPerson = null
 
-    //#region VALIDATE DATA
-    if(continueFlag){
-        thirdPersonParse = PQThirdPartyPersonSchema.safeParse(req.body)
-        if(!thirdPersonParse.success){
-            continueFlag = false
-            error = thirdPersonParse.error
-        }
+  // #region VALIDATE DATA
+  if (canContinue) {
+    thirdPersonParse = PQThirdPartyPersonSchema.safeParse(req.body)
+    if (!thirdPersonParse.success) {
+      canContinue = false
+      errorHandler = thirdPersonParse.error
     }
-    //#endregion
+  }
+  // #endregion
 
-    //#region CREATE PERSON
-    if(continueFlag){
-        try{
-            if(thirdPersonParse?.success){
-                createdThirdPerson = await createPQThirdPartyPersonRepo(thirdPersonParse?.data);
-            }
-        }catch{
-            continueFlag = false
-        }
+  // #region CREATE PERSON
+  if (canContinue) {
+    try {
+      if (thirdPersonParse?.success) {
+        createdThirdPerson = await createPQThirdPartyPersonRepo(thirdPersonParse?.data)
+      }
+    } catch {
+      canContinue = false
     }
-    //#endregion
+  }
+  // #endregion
 
-    //#region RESPONSE
-    if(continueFlag){
-        return createdThirdPerson ?? JSON.stringify({
-            error: 'No person created',
-            message: 'DB error, can´t create person'
-        })
-    }else{
-        return error?.toString() ?? 'error desconocido'
+  // #region RESPONSE
+  if (canContinue) {
+    response.success = canContinue
+    if (createdThirdPerson) {
+      response = {
+        ...response,
+        detail: [createdThirdPerson]
+      }
+    } else {
+      response = {
+        ...response,
+        message: 'No user created, DB problem'
+      }
     }
-    //#endregion
+  } else {
+    response.success = canContinue
+    response.message = errorHandler?.toString() ?? 'Unknown Error'
+  }
+
+  return response
+  // #endregion
 }
 
-
-export async function getThirdPartiePerson(id: string) {
-     //#region AUDITORIA DE ENTRADA
-    // TODO 
-    //#endregion
+export async function getThirdPartiePerson (id: string) {
+  // #region AUDITORIA DE ENTRADA
+  // TODO
+  // #endregion
 }

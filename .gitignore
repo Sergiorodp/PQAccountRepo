@@ -8,5 +8,4 @@ coverage/*
 
 # enviroment variables
 .env
-.eslintrc.yml
 pnpm-lock.yaml
