@@ -1,9 +1,9 @@
-interface IResponseBusiness<T> {
-    message: string,
-    success: boolean,
-    detail: [T | object]
+interface IResponseBusiness {
+  message: string
+  success: boolean
+  detail: [object]
 }
 
-export {
-    IResponseBusiness
+export type {
+  IResponseBusiness
 }
