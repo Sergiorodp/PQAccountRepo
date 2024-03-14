@@ -1,7 +1,7 @@
 import { type Application } from 'express'
 
 import userController from '@app/controllers/PQUserController'
-import thirdPartyPersonController from '@app/controllers/PQThirdPartiesController'
+import thirdPartyPersonController from '@app/controllers/PQThirdPartyController'
 import authController from '@app/controllers/PQAuthController'
 
 export default function addRoutes (app: Application): void {
