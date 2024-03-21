@@ -1,25 +1,25 @@
 import puc from '@app/utils/PUC/puc.json'
 
-import { Request, Response } from "express"
+import { type Request, type Response } from 'express'
 
-//#region GET PUC BY CODE
-function getPucByCode(req: Request, res: Response){
-    const {code = ''} = req.body
-    res.send(puc.filter( p => {
-        return p.Codigo.startsWith(code)
-    }))
+// #region GET PUC BY CODE
+function getPucByCode (req: Request, res: Response): void {
+  const { code = '' } = req.body
+  res.send(puc.filter(p => {
+    return p.Codigo.startsWith(code)
+  }))
 }
-//#endregion
+// #endregion
 
-//#region healthCheck
-function healthCheck(_ : Request, res: Response){
-    res.send({
-        responde: 'PUC API IS WORKING'
-    })
+// #region healthCheck
+function healthCheck (_: Request, res: Response): void {
+  res.send({
+    responde: 'PUC API IS WORKING'
+  })
 }
-//#endregion
+// #endregion
 
 export default {
-    getPucByCode,
-    healthCheck
+  getPucByCode,
+  healthCheck
 }
