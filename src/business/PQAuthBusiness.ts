@@ -9,10 +9,10 @@ import jwt, { type SignOptions } from 'jsonwebtoken'
 import { type PQUserRepoResponse } from '@app/models/PQUserModel'
 
 // #region GET PUC BY CODE
-async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness<object>> {
+async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness> {
   let canContinue = true
   let errorHandler: Error | null = null
-  let response: IResponseBusiness<object> = {
+  let response: IResponseBusiness = {
     message: '',
     success: false,
     detail: [{}]
@@ -20,6 +20,7 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness<obj
   let userInfo: TPQLogIn | null = null
   let getUserDBResponse: PQUserRepoResponse | null = null
   let checkPassword: boolean = false
+  let generateToken: string = ''
 
   // #region IN AUDIT
   // #endregion
@@ -53,41 +54,50 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness<obj
         checkPassword = await argon.verify(getUserDBResponse?.password, userInfo?.password)
       } else {
         canContinue = false
+        errorHandler = new Error('password wrong')
         // TODO handle error
       }
     } catch (e) {
       canContinue = false
+      errorHandler = e as Error
       // TODO handle error
     }
   }
   // #endregion
 
   // #region GENERATE JWT
-  if (canContinue && checkPassword) {
-    try {
-      const currentDate = new Date()
-      const creationDate = Math.floor(currentDate.getTime() / 1000)
-      const expirationDate = Math.floor(currentDate.setHours(currentDate.getHours() + 10) / 1000)
-      const options: SignOptions = {
-        algorithm: 'HS256',
-        expiresIn: '10h'
-      }
-      const payload = {
-        userName: getUserDBResponse?.userName,
-        name: getUserDBResponse?.name,
-        email: getUserDBResponse?.email,
-        createToken: creationDate,
-        expireToken: expirationDate
-      }
-      if (envs.JWT_KEY != null) {
-        jwt.sign(payload, envs.JWT_KEY, options)
-      } else {
+  if (canContinue) {
+    if (checkPassword) {
+      try {
+        const currentDate = new Date()
+        const creationDate = Math.floor(currentDate.getTime() / 1000)
+        const expirationDate = Math.floor(currentDate.setHours(currentDate.getHours() + 10) / 1000)
+        const options: SignOptions = {
+          algorithm: 'HS256',
+          expiresIn: '10h'
+        }
+        const payload = {
+          userName: getUserDBResponse?.userName,
+          name: getUserDBResponse?.name,
+          email: getUserDBResponse?.email,
+          createToken: creationDate,
+          expireToken: expirationDate
+        }
+        if (envs.JWT_KEY != null) {
+          generateToken = jwt.sign(payload, envs.JWT_KEY, options)
+        } else {
+          canContinue = false
+          errorHandler = new Error(envs.JWT_KEY)
+          // TODO handle no JWT_KEY error
+        }
+      } catch (e) {
         canContinue = false
-        // TODO handle no JWT_KEY error
+        errorHandler = e as Error
+        // TODO handle error cant sign token
       }
-    } catch {
+    } else {
       canContinue = false
-      // TODO handle error cant sign token
+      errorHandler = new Error('wrong user or password')
     }
   }
   // #endregion
@@ -95,15 +105,19 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness<obj
   // #region RESPONSE
   if (canContinue) {
     response.success = canContinue
-    if (getUserDBResponse) {
+    if (generateToken) {
+      const objectResponse = {
+        token: generateToken
+      }
       response = {
         ...response,
-        detail: [getUserDBResponse]
+        detail: [objectResponse]
       }
     } else {
       response = {
         ...response,
-        message: 'No user created, DB problem'
+        success: false,
+        message: errorHandler?.message.toString() ?? 'No token, DB problem'
       }
     }
   } else {
