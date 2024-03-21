@@ -6,6 +6,7 @@ import { getPQUserByEmailRepoV1 } from '@app/dataBase/PQUserRepository'
 import envs from '@app/config/envVars'
 import argon from 'argon2'
 import jwt, { type SignOptions } from 'jsonwebtoken'
+import { argonOptions } from '@app/utils/auth'
 import { type PQUserRepoResponse } from '@app/models/PQUserModel'
 
 // #region GET PUC BY CODE
@@ -51,10 +52,10 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness> {
   if (canContinue) {
     try {
       if (getUserDBResponse?.password && userInfo?.password) {
-        checkPassword = await argon.verify(getUserDBResponse?.password, userInfo?.password)
+        checkPassword = await argon.verify(getUserDBResponse?.password, userInfo?.password, argonOptions)
       } else {
         canContinue = false
-        errorHandler = new Error('password wrong')
+        errorHandler = new Error('user no exist')
         // TODO handle error
       }
     } catch (e) {
@@ -69,9 +70,6 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness> {
   if (canContinue) {
     if (checkPassword) {
       try {
-        const currentDate = new Date()
-        const creationDate = Math.floor(currentDate.getTime() / 1000)
-        const expirationDate = Math.floor(currentDate.setHours(currentDate.getHours() + 10) / 1000)
         const options: SignOptions = {
           algorithm: 'HS256',
           expiresIn: '10h'
@@ -80,8 +78,7 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness> {
           userName: getUserDBResponse?.userName,
           name: getUserDBResponse?.name,
           email: getUserDBResponse?.email,
-          createToken: creationDate,
-          expireToken: expirationDate
+          role: getUserDBResponse?.role
         }
         if (envs.JWT_KEY != null) {
           generateToken = jwt.sign(payload, envs.JWT_KEY, options)

@@ -1,9 +1,9 @@
 import { UserSchema } from '@app/models/PQUserModel'
 import { createNewPQUserRepoV1 } from '@app/dataBase/PQUserRepository'
 import envs from '@app/config/envVars'
-import { Buffer } from 'node:buffer'
 import { type Request } from 'express'
 import argon from 'argon2'
+import { argonOptions } from '@app/utils/auth'
 
 // models handler
 import { type IResponseBusiness } from '@app/models/PQResponseBusinessModel'
@@ -34,7 +34,7 @@ export async function createUserBusinessV1 (req: Request): Promise<IResponseBusi
       if (!envs.HASH_KEY) {
         throw new Error('')
       }
-      const pswd = await argon.hash(userParse.data.password ?? '', { secret: Buffer.from(envs.HASH_KEY) })
+      const pswd = await argon.hash(userParse.data.password ?? '', argonOptions)
       userParse.data = {
         ...userParse.data,
         password: pswd

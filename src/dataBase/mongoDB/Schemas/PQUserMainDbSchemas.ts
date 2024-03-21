@@ -9,6 +9,7 @@ const UserSchema: Schema = new Schema({
   name: { type: String, require: true, uppercase: true },
   password: { type: String, require: true },
   email: { type: String, require: true, unique: true },
+  role: { type: String, require: true },
   MFA: { type: Boolean, default: false }
 })
 
