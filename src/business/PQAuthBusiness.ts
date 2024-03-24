@@ -7,7 +7,7 @@ import envs from '@app/config/envVars'
 import argon from 'argon2'
 import jwt, { type SignOptions } from 'jsonwebtoken'
 import { argonOptions } from '@app/utils/auth'
-import { type PQUserRepoResponse } from '@app/models/PQUserModel'
+import { type IPQUserResponse } from '@app/models/PQUserModel'
 
 // #region GET PUC BY CODE
 async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness> {
@@ -19,7 +19,7 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness> {
     detail: [{}]
   }
   let userInfo: TPQLogIn | null = null
-  let getUserDBResponse: PQUserRepoResponse | null = null
+  let getUserDBResponse: IPQUserResponse | null = null
   let checkPassword: boolean = false
   let generateToken: string = ''
 
@@ -52,7 +52,7 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness> {
   if (canContinue) {
     try {
       if (getUserDBResponse?.password && userInfo?.password) {
-        checkPassword = await argon.verify(getUserDBResponse?.password, userInfo?.password, argonOptions)
+        checkPassword = await argon.verify(getUserDBResponse?.password ?? '', userInfo?.password, argonOptions)
       } else {
         canContinue = false
         errorHandler = new Error('user no exist')
@@ -84,7 +84,7 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness> {
           generateToken = jwt.sign(payload, envs.JWT_KEY, options)
         } else {
           canContinue = false
-          errorHandler = new Error(envs.JWT_KEY)
+          errorHandler = new Error('no JWT KEY found')
           // TODO handle no JWT_KEY error
         }
       } catch (e) {

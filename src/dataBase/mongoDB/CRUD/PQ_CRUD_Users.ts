@@ -1,4 +1,4 @@
-import { type TPQCreateUserRequest, type PQUserRepoResponse } from '@app/models/PQUserModel'
+import { type TPQUserRequest, type IPQUserResponse } from '@app/models/PQUserModel'
 import MDBUserConnection, { type IUserRequestSchema, type IUserResponseSchema } from '../Schemas/PQUserMainDbSchemas'
 import { type IPQUserRepository } from '@app/dataBase/repoInterfaces/PQRepositoryInterfaces'
 
@@ -17,7 +17,7 @@ export class MongoUsersRepository implements IPQUserRepository {
     return MongoUsersRepository.instance
   }
 
-  async create (User: TPQCreateUserRequest): Promise<IUserRequestSchema> {
+  async create (User: TPQUserRequest): Promise<IUserRequestSchema> {
     try {
       const mongoRes = await MDBUserConnection.create(User)
       const userFormat = { ...mongoRes.toJSON(), _id: '', __v: '' }
@@ -45,7 +45,7 @@ export class MongoUsersRepository implements IPQUserRepository {
     }
   }
 
-  async getByEmail (email: string): Promise<PQUserRepoResponse> {
+  async getByEmail (email: string): Promise<IPQUserResponse> {
     try {
       const projection = { _id: 0, __v: 0 }
       const mongoRes = await MDBUserConnection.findOne<IUserResponseSchema>({ email }, projection)

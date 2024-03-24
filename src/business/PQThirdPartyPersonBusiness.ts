@@ -1,9 +1,9 @@
 import { PQThirdPartyPersonSchema } from '@app/models/PQThirdPartyPersonModel'
-import { createPQThirdPartyPersonRepo } from '@app/dataBase/PQThirdPartyPersonRepository'
+import PQThirdPartyPersonRepository from '@app/dataBase/PQThirdPartyPersonRepository'
 import { type Request } from 'express'
 import { type IResponseBusiness } from '@app/models/PQResponseBusinessModel'
 
-export async function createThirdPartyPersonBusinessV1 (req: Request): Promise<IResponseBusiness> {
+async function createThirdPartyPersonBusinessV1 (req: Request): Promise<IResponseBusiness> {
   let canContinue: boolean = true
   let errorHandler: Error | null = null
   let response: IResponseBusiness = {
@@ -27,7 +27,7 @@ export async function createThirdPartyPersonBusinessV1 (req: Request): Promise<I
   if (canContinue) {
     try {
       if (thirdPersonParse?.success) {
-        createdThirdPerson = await createPQThirdPartyPersonRepo(thirdPersonParse?.data)
+        createdThirdPerson = await PQThirdPartyPersonRepository.createPQThirdPartyPersonRepo(thirdPersonParse?.data)
       }
     } catch {
       canContinue = false
@@ -59,27 +59,55 @@ export async function createThirdPartyPersonBusinessV1 (req: Request): Promise<I
   // #endregion
 }
 
-export async function getThirdPartiePerson (id: string): Promise<IResponseBusiness> {
-  const canContinue: boolean = true
-  const errorHandler: Error | null = null
+// TODO create getThirdPartyPerson
+async function getThirdPartyPersonBusinessV1 (req: Request): Promise<IResponseBusiness> {
+  let canContinue: boolean = true
+  let errorHandler: Error | null = null
   let response: IResponseBusiness = {
     message: '',
     success: false,
     detail: [{}]
   }
+  let idNum = ''; let ThirdPersonRepoResponse = null
+
+  // #region VALIDATE DATA
+  if (canContinue) {
+    if (req.body) {
+      idNum = req.body.idNum
+    } else {
+      canContinue = false
+      errorHandler = new Error('No ID given')
+    }
+  }
+  // #endregion
+
+  // #region GET THIRD PERSON
+  if (canContinue) {
+    try {
+      ThirdPersonRepoResponse = await PQThirdPartyPersonRepository.getPQThirdPartyPersonByIdNumRepo(idNum)
+    } catch (e) {
+      errorHandler = e as Error
+    }
+  }
+  // #endregion
 
   // #region RESPONSE
   if (canContinue) {
     response.success = canContinue
     response = {
       ...response,
-      detail: [{/* */}]
+      detail: [ThirdPersonRepoResponse ?? {}]
     }
   } else {
     response.success = canContinue
-    response.message = errorHandler ?? 'Unknown Error'
+    response.message = errorHandler?.toString() ?? 'Unknown Error'
   }
 
   return response
   // #endregion
+}
+
+export default {
+  createThirdPartyPersonBusinessV1,
+  getThirdPartyPersonBusinessV1
 }
