@@ -1,11 +1,11 @@
-import { type TPQCreateUserRequest, type PQUserRepoResponse } from '@app/models/PQUserModel'
+import { type TPQUserRequest, type IPQUserResponse } from '@app/models/PQUserModel'
 import { MongoUsersRepository as userRepository } from './mongoDB/CRUD/PQ_CRUD_Users'
 
 // #region CREATE USER
-export async function createNewPQUserRepoV1 (user: TPQCreateUserRequest): Promise<PQUserRepoResponse> {
+export async function createNewPQUserRepoV1 (user: TPQUserRequest): Promise<IPQUserResponse> {
   try {
     const newUserResponse = await userRepository.getInstance().create(user)
-    const userData: PQUserRepoResponse = {
+    const userData: IPQUserResponse = {
       userName: newUserResponse.userName,
       name: newUserResponse.name,
       password: '***********',
@@ -20,7 +20,7 @@ export async function createNewPQUserRepoV1 (user: TPQCreateUserRequest): Promis
 // #endregion
 
 // #region GET USER
-export async function getPQUserByIdRepoV1 (id: string): Promise<PQUserRepoResponse> {
+export async function getPQUserByIdRepoV1 (id: string): Promise<IPQUserResponse> {
   try {
     return await userRepository.getInstance().getById(id)
   } catch (e) {
@@ -30,7 +30,7 @@ export async function getPQUserByIdRepoV1 (id: string): Promise<PQUserRepoRespon
 // #endregion
 
 // #region GET USER
-export async function getPQUserByEmailRepoV1 (email: string): Promise<PQUserRepoResponse> {
+export async function getPQUserByEmailRepoV1 (email: string): Promise<IPQUserResponse> {
   try {
     return await userRepository.getInstance().getByEmail(email)
   } catch (e) {

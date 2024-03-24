@@ -23,7 +23,7 @@ export const UserSchema = z.object({
   MFA: z.boolean().optional()
 })
 
-export type TPQCreateUserRequest = z.infer<typeof UserSchema>
+export type TPQUserRequest = z.infer<typeof UserSchema>
 
 export interface TPQUserResponse {
   userName?: string
@@ -33,6 +33,6 @@ export interface TPQUserResponse {
   role?: string
   MFA?: boolean
 }
-export interface PQUserRepoResponse extends TPQUserResponse {
+export interface IPQUserResponse extends TPQUserResponse {
   id?: string
 }
