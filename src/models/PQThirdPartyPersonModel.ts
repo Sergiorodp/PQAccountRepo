@@ -30,12 +30,12 @@ enum EIncomeLevel {
   HIGH = '4'
 }
 
-enum ECivilStatus {
-  MARRIED = 'Married',
-  DIVORCE = 'separate',
-  SINGLE = 'Single',
-  UNION_FREE = 'Union free',
-}
+// enum ECivilStatus {
+//   MARRIED = 'Married',
+//   DIVORCE = 'separate',
+//   SINGLE = 'Single',
+//   UNION_FREE = 'Union free',
+// }
 
 export const PQThirdPartyPersonSchema = z.object({
   idType: z.nativeEnum(EDocType),
@@ -64,9 +64,9 @@ export const PQThirdPartyPersonSchema = z.object({
   lastAssemblyAttended: z.boolean().optional()
 })
 
-export type TPQThirdPartyPerson = z.infer<typeof PQThirdPartyPersonSchema>
+export type TPQThirdPartyPersonRequest = z.infer<typeof PQThirdPartyPersonSchema>
 
-export interface IPQThirdPartyPersonRepoResponse {
+export interface IPQThirdPartyPersonResponse {
   idType?: EDocType
   idNum?: string
   firstLastName?: string
