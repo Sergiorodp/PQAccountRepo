@@ -80,12 +80,12 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness> {
           email: getUserDBResponse?.email,
           role: getUserDBResponse?.role
         }
-        if (envs.JWT_KEY != null) {
-          generateToken = jwt.sign(payload, envs.JWT_KEY, options)
+        if (envs.JWT_SECRET != null) {
+          generateToken = jwt.sign(payload, envs.JWT_SECRET, options)
         } else {
           canContinue = false
           errorHandler = new Error('no JWT KEY found')
-          // TODO handle no JWT_KEY error
+          // TODO handle no JWT_SECRET error
         }
       } catch (e) {
         canContinue = false
