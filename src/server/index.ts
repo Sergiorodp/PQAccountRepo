@@ -1,25 +1,24 @@
-import express, { Application } from "express"
-import dotenv from "dotenv"
-import swaggerUi from "swagger-ui-express"
-import swaggerJson from "swagger-jsdoc"
-import { options } from "@app/config/swaggerConfig"
-import morgan from "morgan"
-dotenv.config()
-//Routes
-import addRoutes from "@app/routes/index"
+import express, { type Application } from 'express'
+import dotenv from 'dotenv'
+import morgan from 'morgan'
+// Routes
+import addRoutes from '@app/routes/index'
+// connect to mongodb
+import mongoInit from '@app/dataBase/mongoDB'
+import { swaggerApiDocs } from '@app/config/swaggerConfig'
 
-const specs = swaggerJson(options)
-const server : Application = express()
+dotenv.config()
+mongoInit()
+const server: Application = express()
 
 // middlewares
 server.use(express.json())
-server.use('api/v1/docs', swaggerUi.serve, swaggerUi.setup(specs))
-server.use(morgan("tiny"))
+server.use(morgan('tiny'))
 
-//routes
+// routes
 addRoutes(server)
 
-//connect to mongodb
-import '@app/dataBase/mongoDB/index'
+// docs
+swaggerApiDocs(server)
 
 export { server }
