@@ -1,9 +1,10 @@
 import {
-  type TPQThirdPartyPersonRequest,
+  type IPQThirdPartyPersonRequest,
   type IPQThirdPartyPersonResponse
 } from '@app/models/PQThirdPartyPersonModel'
 import MDBThirdPartyPersonConnection, { type IThirdPartyPersonSchema } from '../Schemas/PQThirdPartyPersonSchemas'
 import { type IPQThirdPartiesRepository } from '@app/dataBase/repoInterfaces/PQThirdPartyPersonRepoInterface'
+import { type ProjectionType } from 'mongoose'
 
 export class MongoThirdPersonRepository implements IPQThirdPartiesRepository {
   private static instance: MongoThirdPersonRepository
@@ -21,22 +22,35 @@ export class MongoThirdPersonRepository implements IPQThirdPartiesRepository {
     return MongoThirdPersonRepository.instance
   }
 
-  async create (TPPerson: TPQThirdPartyPersonRequest): Promise<IThirdPartyPersonSchema> {
+  async create (TPPerson: IPQThirdPartyPersonRequest): Promise<IThirdPartyPersonSchema> {
     const mongoRes = await MDBThirdPartyPersonConnection.create(TPPerson)
-    const formatObj = { ...mongoRes.toJSON(), _id: '', __v: '' }
+    const formatObj = { ...mongoRes.toJSON(), _id: '', __v: '', id: '' }
     return formatObj
   }
 
   async getByIdNum (idNum: string): Promise<IPQThirdPartyPersonResponse> {
     try {
       const mongoRes = await MDBThirdPartyPersonConnection.findOne({ idNum }, MongoThirdPersonRepository.projection)
-      if (mongoRes?.idNum) {
+      if (mongoRes?.id) {
         const formatObj = mongoRes?.toJSON()
         return formatObj
       }
       return await Promise.reject(new Error('no Third Party Person Found'))
     } catch {
       return await Promise.reject(new Error('DB ERROR'))
+    }
+  }
+
+  async getByUserId (userId: string, projection: ProjectionType<IPQThirdPartyPersonRequest> = MongoThirdPersonRepository.projection): Promise<IPQThirdPartyPersonResponse[]> {
+    try {
+      const mongoRes = await MDBThirdPartyPersonConnection.find({ userId }, projection)
+      if (mongoRes.length > 0) {
+        const formatObj = mongoRes?.map(item => item.toJSON())
+        return formatObj
+      }
+      return await Promise.reject(new Error('no Third Party Person Found'))
+    } catch (e) {
+      return await Promise.reject(e)
     }
   }
 }

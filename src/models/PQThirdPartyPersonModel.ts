@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { type ObjectId } from 'mongoose'
 
 enum EDocType {
   CC = 'CC',
@@ -64,7 +65,9 @@ export const PQThirdPartyPersonSchema = z.object({
   lastAssemblyAttended: z.boolean().optional()
 })
 
-export type TPQThirdPartyPersonRequest = z.infer<typeof PQThirdPartyPersonSchema>
+export interface IPQThirdPartyPersonRequest extends z.infer<typeof PQThirdPartyPersonSchema> {
+  userId: ObjectId
+}
 
 export interface IPQThirdPartyPersonResponse {
   idType?: EDocType
