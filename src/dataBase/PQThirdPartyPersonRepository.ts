@@ -1,8 +1,8 @@
 import { MongoThirdPersonRepository } from '@app/dataBase/mongoDB/CRUD/PQ_CRUD_THIRD_PARTY'
-import { type TPQThirdPartyPersonRequest, type IPQThirdPartyPersonResponse } from '@app/models/PQThirdPartyPersonModel'
+import { type IPQThirdPartyPersonRequest, type IPQThirdPartyPersonResponse } from '@app/models/PQThirdPartyPersonModel'
 
 // #region CREATE PERSON
-async function createPQThirdPartyPersonRepo (thirdPerson: TPQThirdPartyPersonRequest | undefined): Promise<TPQThirdPartyPersonRequest> {
+async function createPQThirdPartyPersonRepo (thirdPerson: IPQThirdPartyPersonRequest): Promise<IPQThirdPartyPersonRequest> {
   if (thirdPerson === undefined) return await Promise.reject(new Error('No third Person'))
   return await MongoThirdPersonRepository.getInstance().create(thirdPerson)
 }

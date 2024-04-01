@@ -1,9 +1,14 @@
 import { PQThirdPartyPersonSchema } from '@app/models/PQThirdPartyPersonModel'
 import PQThirdPartyPersonRepository from '@app/dataBase/PQThirdPartyPersonRepository'
+import PQUserRepository from '@app/dataBase/PQUserRepository'
+
+// models
 import { type Request } from 'express'
 import { type IResponseBusiness } from '@app/models/PQResponseBusinessModel'
+import { type IPQRequestBusiness } from '@app/models/PQRequestBusinessModel'
+import { type IPQUserResponse } from '@app/models/PQUserModel'
 
-async function createThirdPartyPersonBusinessV1 (req: Request): Promise<IResponseBusiness> {
+async function createThirdPartyPersonBusinessV1 (req: IPQRequestBusiness): Promise<IResponseBusiness> {
   let canContinue: boolean = true
   let errorHandler: Error | null = null
   let response: IResponseBusiness = {
@@ -11,6 +16,7 @@ async function createThirdPartyPersonBusinessV1 (req: Request): Promise<IRespons
     success: false,
     detail: [{}]
   }
+  let user: IPQUserResponse | null = null
   let thirdPersonParse; let createdThirdPerson = null
 
   // #region VALIDATE DATA
@@ -23,11 +29,28 @@ async function createThirdPartyPersonBusinessV1 (req: Request): Promise<IRespons
   }
   // #endregion
 
+  // #region GET USER
+  if (canContinue) {
+    try {
+      if (req.PQUserInfo?.email) {
+        user = await PQUserRepository.getPQUserByEmailRepoV1(req.PQUserInfo?.email, { email: 1 })
+      } else {
+        errorHandler = new Error('No user email')
+        canContinue = false
+      }
+    } catch (e) {
+      // TODO Error handler get user
+      canContinue = false
+    }
+  }
+  // #endregion
+
   // #region CREATE PERSON
   if (canContinue) {
     try {
-      if (thirdPersonParse?.success) {
-        createdThirdPerson = await PQThirdPartyPersonRepository.createPQThirdPartyPersonRepo(thirdPersonParse?.data)
+      if (thirdPersonParse?.success && user?._id) {
+        const thirdPersonCreateRequest = { ...thirdPersonParse?.data, userId: user?._id }
+        createdThirdPerson = await PQThirdPartyPersonRepository.createPQThirdPartyPersonRepo(thirdPersonCreateRequest)
       }
     } catch {
       canContinue = false

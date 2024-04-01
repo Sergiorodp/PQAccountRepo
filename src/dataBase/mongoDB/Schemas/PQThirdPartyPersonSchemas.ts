@@ -1,7 +1,7 @@
 import mongoose, { Schema, type Document } from 'mongoose'
-import { type TPQThirdPartyPersonRequest } from '@app/models/PQThirdPartyPersonModel'
+import { type IPQThirdPartyPersonRequest } from '@app/models/PQThirdPartyPersonModel'
 
-interface IThirdPartyPerson extends TPQThirdPartyPersonRequest {
+interface IThirdPartyPerson extends IPQThirdPartyPersonRequest {
   userId: Schema.Types.ObjectId
 }
 export interface IThirdPartyPersonSchema extends IThirdPartyPerson, Document {}
