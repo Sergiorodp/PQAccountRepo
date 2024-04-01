@@ -1,9 +1,6 @@
-import { Router, type Request, type Response } from 'express'
+import { type Request, type Response } from 'express'
 import { HTTPCODES } from '@app/utils/httpCodes'
 import PQThirdPartyPersonBusiness from '@app/business/PQThirdPartyPersonBusiness'
-import { authorization } from '@app/middelwares/auth/PQAuthenticationJWT'
-
-const thirdPartiesRouter = Router()
 
 console.log('[[ THIRD PARTIES LOADED ]]')
 
@@ -61,7 +58,7 @@ function getThirdPartyPersonControllerByIdNumV1 (req: Request, res: Response): v
   // #endregion
 }
 
-thirdPartiesRouter.post('/create/v1', authorization, createThirdPartyPersonControllerV1)
-thirdPartiesRouter.get('/getByNum/v1', authorization, getThirdPartyPersonControllerByIdNumV1)
-
-export default thirdPartiesRouter
+export default {
+  createThirdPartyPersonControllerV1,
+  getThirdPartyPersonControllerByIdNumV1
+}
