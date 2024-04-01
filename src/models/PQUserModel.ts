@@ -25,14 +25,12 @@ export const UserSchema = z.object({
 
 export type TPQUserRequest = z.infer<typeof UserSchema>
 
-export interface TPQUserResponse {
+export interface IPQUserResponse {
   userName?: string
   name?: string
   password?: string
   email?: string
   role?: string
   MFA?: boolean
-}
-export interface IPQUserResponse extends TPQUserResponse {
-  id?: string
+  _id?: any
 }

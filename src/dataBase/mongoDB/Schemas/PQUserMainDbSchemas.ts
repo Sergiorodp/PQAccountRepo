@@ -1,8 +1,8 @@
 import mongoose, { Schema, type Document } from 'mongoose'
-import { type TPQUserRequest, type TPQUserResponse } from '@app/models/PQUserModel'
+import { type TPQUserRequest, type IPQUserResponse } from '@app/models/PQUserModel'
 
 export interface IUserRequestSchema extends TPQUserRequest, Document {}
-export interface IUserResponseSchema extends TPQUserResponse, Document {}
+export interface IUserResponseSchema extends IPQUserResponse, Document {}
 
 const UserSchema: Schema = new Schema({
   userName: { type: String, require: true, lowercase: true },

@@ -1,6 +1,7 @@
 import { type TPQUserRequest, type IPQUserResponse } from '@app/models/PQUserModel'
 import MDBUserConnection, { type IUserRequestSchema, type IUserResponseSchema } from '../Schemas/PQUserMainDbSchemas'
 import { type IPQUserRepository } from '@app/dataBase/repoInterfaces/PQRepositoryInterfaces'
+import { type ProjectionType } from 'mongoose'
 
 export class MongoUsersRepository implements IPQUserRepository {
   private static instance: MongoUsersRepository
@@ -45,11 +46,10 @@ export class MongoUsersRepository implements IPQUserRepository {
     }
   }
 
-  async getByEmail (email: string): Promise<IPQUserResponse> {
+  async getByEmail (email: string, projection: ProjectionType<IPQUserResponse> = { _id: 0, __v: 0 }): Promise<IPQUserResponse> {
     try {
-      const projection = { _id: 0, __v: 0 }
       const mongoRes = await MDBUserConnection.findOne<IUserResponseSchema>({ email }, projection)
-      if ((mongoRes?.email) != null) {
+      if ((mongoRes?.id) != null) {
         const userFormat = mongoRes?.toJSON<IUserResponseSchema>()
         return userFormat
       }
