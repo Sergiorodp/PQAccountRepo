@@ -20,7 +20,7 @@ export function authorization (req: Request, res: Response, next: NextFunction):
   // #endregion
 
   // #region VERIFY
-  verify(token ?? '', envs.JWT_SECRET ?? '', function (err, _) {
+  verify(token ?? '', envs.JWT_SECRET ?? '', function (err, decoded) {
     if (err) {
       res.status(401).send({
         message: `${err.name}: ${err.message}`,
@@ -28,6 +28,7 @@ export function authorization (req: Request, res: Response, next: NextFunction):
       })
       return
     }
+    Object.assign(req, { PQUserInfo: decoded }) // eslint-disable-line @typescript-eslint/no-explicit-any
     next()
   })
   // #endregion
