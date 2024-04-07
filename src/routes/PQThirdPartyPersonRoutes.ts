@@ -20,6 +20,6 @@ thirdPartiesRouter.post('/create/v1', authorization, PQThirdPartyController.crea
  *          - ThirdPartyPerson
  */
 thirdPartiesRouter.get('/getByNum/v1', authorization, PQThirdPartyController.getThirdPartyPersonControllerByIdNumV1)
-thirdPartiesRouter.get('/getByUserId/v1', authorization, PQThirdPartyController.getThirdPartyPersonControllerByIdNumV1)
+thirdPartiesRouter.get('/getByUserId/v1', authorization, PQThirdPartyController.getThirdPartyPersonControllerByUserIdV1)
 
 export default thirdPartiesRouter

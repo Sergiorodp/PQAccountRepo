@@ -1,5 +1,6 @@
 import mongoose, { Schema, type Document } from 'mongoose'
 import { type IPQThirdPartyPersonRequest } from '@app/models/PQThirdPartyPersonModel'
+import { PQUserDbName } from './PQUserMainDbSchemas'
 
 interface IThirdPartyPerson extends IPQThirdPartyPersonRequest {
   userId: Schema.Types.ObjectId
@@ -7,7 +8,7 @@ interface IThirdPartyPerson extends IPQThirdPartyPersonRequest {
 export interface IThirdPartyPersonSchema extends IThirdPartyPerson, Document {}
 
 const ThirdPersonSchema: Schema = new Schema<IThirdPartyPerson>({
-  userId: { type: Schema.Types.ObjectId, required: true },
+  userId: { type: Schema.Types.ObjectId, ref: PQUserDbName, required: true },
   idType: { type: String, require: true },
   idNum: { type: String, require: true },
   firstLastName: { type: String, require: false, default: '' },

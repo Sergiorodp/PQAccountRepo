@@ -2,13 +2,14 @@ import {
   type IPQThirdPartyPersonRequest,
   type IPQThirdPartyPersonResponse
 } from '@app/models/PQThirdPartyPersonModel'
-import MDBThirdPartyPersonConnection, { type IThirdPartyPersonSchema } from '../Schemas/PQThirdPartyPersonSchemas'
+import MDBThirdPartyPersonConnection, { type IThirdPartyPersonSchema } from '../ORM/PQThirdPartyPersonSchemas'
 import { type IPQThirdPartiesRepository } from '@app/dataBase/repoInterfaces/PQThirdPartyPersonRepoInterface'
 import { type ProjectionType } from 'mongoose'
+import { type ObjectId } from 'mongodb'
 
 export class MongoThirdPersonRepository implements IPQThirdPartiesRepository {
   private static instance: MongoThirdPersonRepository
-  private static readonly projection = { _id: 0, _v: 0 }
+  private static readonly projection = { _id: 0, __v: 0 }
 
   private constructor () {
     // Private constructor to prevent direct instantiation
@@ -41,11 +42,11 @@ export class MongoThirdPersonRepository implements IPQThirdPartiesRepository {
     }
   }
 
-  async getByUserId (userId: string, projection: ProjectionType<IPQThirdPartyPersonRequest> = MongoThirdPersonRepository.projection): Promise<IPQThirdPartyPersonResponse[]> {
+  async getByUserId (userId: ObjectId, projection: ProjectionType<IPQThirdPartyPersonRequest> = MongoThirdPersonRepository.projection): Promise<IPQThirdPartyPersonResponse[]> {
     try {
-      const mongoRes = await MDBThirdPartyPersonConnection.find({ userId }, projection)
+      const mongoRes = await MDBThirdPartyPersonConnection.find({ userId })
       if (mongoRes.length > 0) {
-        const formatObj = mongoRes?.map(item => item.toJSON())
+        const formatObj = mongoRes?.map(item => item.toJSON<IPQThirdPartyPersonResponse>())
         return formatObj
       }
       return await Promise.reject(new Error('no Third Party Person Found'))
