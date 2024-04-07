@@ -82,8 +82,7 @@ async function createThirdPartyPersonBusinessV1 (req: IPQRequestBusiness): Promi
   // #endregion
 }
 
-// TODO create getThirdPartyPerson
-async function getThirdPartyPersonBusinessV1 (req: Request): Promise<IResponseBusiness> {
+async function getThirdPartyPersonBusinessByIdNumV1 (req: Request): Promise<IResponseBusiness> {
   let canContinue: boolean = true
   let errorHandler: Error | null = null
   let response: IResponseBusiness = {
@@ -130,7 +129,59 @@ async function getThirdPartyPersonBusinessV1 (req: Request): Promise<IResponseBu
   // #endregion
 }
 
+async function getThirdPartyPersonBusinessByUserIdV1 (req: IPQRequestBusiness): Promise<IResponseBusiness> {
+  let canContinue = true
+  let errorHandler: Error | null = null
+  let response: IResponseBusiness = {
+    message: '',
+    success: false,
+    detail: [{}]
+  }
+  let ThirdPersonRepoResponse = null
+
+  // #region VALIDATE DATA
+  if (canContinue) {
+    if (!req.PQUserInfo?.email) {
+      canContinue = false
+      errorHandler = new Error('No ID given')
+    }
+  }
+  // #endregion
+
+  // #region GET THIRD PERSONS
+  if (canContinue) {
+    try {
+      if (req.PQUserInfo) {
+        ThirdPersonRepoResponse = await PQThirdPartyPersonRepository.getThirdPartyPersonByUserIdRepo(req.PQUserInfo?.userId)
+      } else {
+        canContinue = false
+        errorHandler = new Error('No user found')
+      }
+    } catch (e) {
+      canContinue = false
+      errorHandler = e as Error
+    }
+  }
+  // #endregion
+
+  // #region RESPONSE
+  if (canContinue) {
+    response.success = canContinue
+    response = {
+      ...response,
+      detail: ThirdPersonRepoResponse as [object] ?? []
+    }
+  } else {
+    response.success = canContinue
+    response.message = errorHandler?.toString() ?? 'Unknown Error'
+  }
+
+  return response
+  // #endregion
+}
+
 export default {
   createThirdPartyPersonBusinessV1,
-  getThirdPartyPersonBusinessV1
+  getThirdPartyPersonBusinessByIdNumV1,
+  getThirdPartyPersonBusinessByUserIdV1
 }

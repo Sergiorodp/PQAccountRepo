@@ -9,4 +9,5 @@ interface IPQUserInfo {
   name: string
   email: string
   role: string
+  userId: string
 }

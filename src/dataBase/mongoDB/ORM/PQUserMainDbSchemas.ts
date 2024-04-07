@@ -1,6 +1,8 @@
 import mongoose, { Schema, type Document } from 'mongoose'
 import { type TPQUserRequest, type IPQUserResponse } from '@app/models/PQUserModel'
 
+export const PQUserDbName = 'PQ_Users_DB'
+
 export interface IUserRequestSchema extends TPQUserRequest, Document {}
 export interface IUserResponseSchema extends IPQUserResponse, Document {}
 
@@ -13,4 +15,4 @@ const UserSchema: Schema = new Schema({
   MFA: { type: Boolean, default: false }
 })
 
-export default mongoose.model<IUserRequestSchema>('PQ_Users_DB', UserSchema)
+export default mongoose.model<IUserRequestSchema>(PQUserDbName, UserSchema)

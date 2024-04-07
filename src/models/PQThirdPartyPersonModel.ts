@@ -70,6 +70,7 @@ export interface IPQThirdPartyPersonRequest extends z.infer<typeof PQThirdPartyP
 }
 
 export interface IPQThirdPartyPersonResponse {
+  userId?: ObjectId
   idType?: EDocType
   idNum?: string
   firstLastName?: string
