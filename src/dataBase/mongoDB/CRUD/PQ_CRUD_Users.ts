@@ -1,5 +1,5 @@
 import { type TPQUserRequest, type IPQUserResponse } from '@app/models/PQUserModel'
-import MDBUserConnection, { type IUserRequestSchema, type IUserResponseSchema } from '../Schemas/PQUserMainDbSchemas'
+import MDBUserConnection, { type IUserRequestSchema, type IUserResponseSchema } from '../ORM/PQUserMainDbSchemas'
 import { type IPQUserRepository } from '@app/dataBase/repoInterfaces/PQRepositoryInterfaces'
 import { type ProjectionType } from 'mongoose'
 
