@@ -78,7 +78,8 @@ async function userLoginBusinessV1 (req: Request): Promise<IResponseBusiness> {
           userName: getUserDBResponse?.userName,
           name: getUserDBResponse?.name,
           email: getUserDBResponse?.email,
-          role: getUserDBResponse?.role
+          role: getUserDBResponse?.role,
+          userId: getUserDBResponse?._id
         }
         if (envs.JWT_SECRET != null) {
           generateToken = jwt.sign(payload, envs.JWT_SECRET, options)
