@@ -14,19 +14,19 @@ function userLoginControllerV1 (req: Request, res: Response): void {
     authBusiness.userLoginBusinessV1(req)
       .then(businessRes => {
         if (businessRes.success) {
-          res.status(HTTPCODES.accepted).send(businessRes)
+          res.status(HTTPCODES.ACCEPTED).send(businessRes)
         } else {
-          res.status(HTTPCODES.badRequest).send(businessRes)
+          res.status(HTTPCODES.BAD_REQUEST).send(businessRes)
         }
       })
       .catch(e => {
-        res.status(HTTPCODES.serverError).send({
+        res.status(HTTPCODES.SERVER_ERROR).send({
           message: e.toString(),
           success: false
         })
       })
   } else {
-    res.status(HTTPCODES.badRequest).send('No body found')
+    res.status(HTTPCODES.BAD_REQUEST).send('No body found')
   }
   // #region AUDITORIA DE SALIDA
   // TODO
