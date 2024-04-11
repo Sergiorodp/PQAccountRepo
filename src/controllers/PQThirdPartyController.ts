@@ -12,19 +12,19 @@ function createThirdPartyPersonControllerV1 (req: Request, res: Response): void 
     PQThirdPartyPersonBusiness.createThirdPartyPersonBusinessV1(req)
       .then(createResponse => {
         if (createResponse.success) {
-          res.status(HTTPCODES.accepted).send(createResponse)
+          res.status(HTTPCODES.ACCEPTED).send(createResponse)
         } else {
-          res.status(HTTPCODES.badRequest).send(createResponse)
+          res.status(HTTPCODES.BAD_REQUEST).send(createResponse)
         }
       })
       .catch(() => {
-        res.status(HTTPCODES.serverError).send({
+        res.status(HTTPCODES.SERVER_ERROR).send({
           message: 'server error',
           success: false
         })
       })
   } else {
-    res.status(HTTPCODES.badRequest).send('No body found')
+    res.status(HTTPCODES.BAD_REQUEST).send('No body found')
   }
   // #region AUDITORIA DE SALIDA
   // TODO
@@ -39,19 +39,19 @@ function getThirdPartyPersonControllerByIdNumV1 (req: Request, res: Response): v
     PQThirdPartyPersonBusiness.getThirdPartyPersonBusinessByIdNumV1(req)
       .then(response => {
         if (response.success) {
-          res.status(HTTPCODES.accepted).send(response)
+          res.status(HTTPCODES.ACCEPTED).send(response)
         } else {
-          res.status(HTTPCODES.badRequest).send(response)
+          res.status(HTTPCODES.BAD_REQUEST).send(response)
         }
       })
       .catch(() => {
-        res.status(HTTPCODES.serverError).send({
+        res.status(HTTPCODES.SERVER_ERROR).send({
           message: 'server error',
           success: false
         })
       })
   } else {
-    res.status(HTTPCODES.badRequest).send('No body found')
+    res.status(HTTPCODES.BAD_REQUEST).send('No body found')
   }
   // #region AUDITORIA DE SALIDA
   // TODO
@@ -66,19 +66,19 @@ function getThirdPartyPersonControllerByUserIdV1 (req: Request, res: Response): 
     PQThirdPartyPersonBusiness.getThirdPartyPersonBusinessByUserIdV1(req)
       .then(response => {
         if (response.success) {
-          res.status(HTTPCODES.accepted).send(response)
+          res.status(HTTPCODES.ACCEPTED).send(response)
         } else {
-          res.status(HTTPCODES.badRequest).send(response)
+          res.status(HTTPCODES.BAD_REQUEST).send(response)
         }
       })
       .catch(() => {
-        res.status(HTTPCODES.serverError).send({
+        res.status(HTTPCODES.SERVER_ERROR).send({
           message: 'server error',
           success: false
         })
       })
   } else {
-    res.status(HTTPCODES.badRequest).send('No body found')
+    res.status(HTTPCODES.BAD_REQUEST).send('No body found')
   }
   // #region AUDITORIA DE SALIDA
   // TODO

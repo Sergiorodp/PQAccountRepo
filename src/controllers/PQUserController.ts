@@ -16,19 +16,19 @@ function createUserControllerV1 (req: Request, res: Response): void {
     createUserBusinessV1(req)
       .then((userInfo: IResponseBusiness) => {
         if (userInfo.success) {
-          res.status(HTTPCODES.created).send(userInfo)
+          res.status(HTTPCODES.CREATED).send(userInfo)
         } else {
-          res.status(HTTPCODES.badRequest).send(userInfo)
+          res.status(HTTPCODES.BAD_REQUEST).send(userInfo)
         }
       })
       .catch(() => {
-        res.status(HTTPCODES.serverError).send({
+        res.status(HTTPCODES.SERVER_ERROR).send({
           message: 'server error',
           success: false
         })
       })
   } else {
-    res.status(HTTPCODES.badRequest).send({
+    res.status(HTTPCODES.BAD_REQUEST).send({
       value: 'transacción no procesada, no se encontro el body'
     })
   }
