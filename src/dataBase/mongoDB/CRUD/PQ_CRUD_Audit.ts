@@ -17,6 +17,6 @@ export class MongoAuditRepository implements IPQAuditRepository {
   }
 
   async createRecord (record: TAuditRecordRequestModel): Promise<IAuditRecordResponseModel> {
-    // TODO create Record logic
+    // TODO create Record audit logic
   }
 }
