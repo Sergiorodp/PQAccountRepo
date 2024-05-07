@@ -1,5 +1,6 @@
 import { type TAuditRecordRequestModel, type IAuditRecordResponseModel } from '@app/models/PQAuditModel'
 import { type IPQAuditRepository } from '@app/dataBase/repoInterfaces/PQAuditRepoInterface'
+import AuditMongoConnection from '../ORM/PQAuditSchemas'
 
 export class MongoAuditRepository implements IPQAuditRepository {
   private static instance: MongoAuditRepository
@@ -17,6 +18,14 @@ export class MongoAuditRepository implements IPQAuditRepository {
   }
 
   async createRecord (record: TAuditRecordRequestModel): Promise<IAuditRecordResponseModel> {
-    // TODO create Record audit logic
+    try {
+      const mongoRes = await AuditMongoConnection.create(record)
+      const userFormat = { ...mongoRes.toJSON(), _id: '', __v: '' }
+      return userFormat
+    } catch (e) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      const error = `create Audit record unknown error: ${e}`
+      return await Promise.reject(new Error(error))
+    }
   }
 }
